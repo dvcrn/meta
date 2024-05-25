@@ -1648,8 +1648,9 @@ func (portal *Portal) handleMetaOrWhatsAppDelete(ctx context.Context, sender *Pu
 	if sender != nil {
 		intent = sender.IntentFor(portal)
 	}
+
 	for _, part := range targetMsg {
-		msg := format.RenderMarkdown("message to deleted", true, true)
+		msg := format.RenderMarkdown("message got deleted", true, true)
 		msg.RelatesTo = (&event.RelatesTo{}).SetReplyTo(part.MXID)
 		portal.bridge.Bot.SendMessageEvent(ctx, portal.MXID, event.EventMessage, &msg)
 		continue
