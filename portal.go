@@ -1649,6 +1649,11 @@ func (portal *Portal) handleMetaOrWhatsAppDelete(ctx context.Context, sender *Pu
 		intent = sender.IntentFor(portal)
 	}
 	for _, part := range targetMsg {
+		msg := format.RenderMarkdown("message to deleted", true, true)
+		msg.RelatesTo = (&event.RelatesTo{}).SetReplyTo(part.MXID)
+		portal.bridge.Bot.SendMessageEvent(ctx, portal.MXID, event.EventMessage, &msg)
+		continue
+
 		_, err = intent.RedactEvent(ctx, portal.MXID, part.MXID, mautrix.ReqRedact{
 			TxnID: "mxmeta_delete_" + part.MXID.String(),
 		})
